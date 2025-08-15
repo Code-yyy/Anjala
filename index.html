@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stylish Flip Login/Register</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            perspective: 1200px;
+            margin: 0;
+        }
+
+        .card {
+    width: 360px;
+    height: 520px; /* Reduced height */
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s ease-in-out;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            font-weight: 500;
+            overflow-y: auto;
+        }
+        .face {
+    overflow-y: auto; /* still scroll inside */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
+}
+
+.face::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+
+        .front {
+            background: linear-gradient(135deg, #FF6A88, #FF99AC);
+        }
+
+        .back {
+            background: linear-gradient(135deg, #43C6AC, #191654);
+            transform: rotateY(180deg);
+        }
+
+        .face h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .input-group > label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .form-control-group input {
+            margin-right: 8px;
+            width: auto;
+            transform: scale(1.0);
+            position: relative;
+            top: 1px; 
+        }
+        
+        .radio-options, .checkbox-options {
+            width: 100%;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .face input[type="text"],
+        .face input[type="password"],
+        .face input[type="number"],
+        .face select {
+            width: 100%;
+            padding: 12px;
+            height: 44px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .face input:focus,
+        .face select:focus {
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .face button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.3);
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .face button:hover {
+            background: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .button-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .button-section span {
+            margin-top: 10px;
+            color: #fff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="card" id="card">
+        <!-- Login Side -->
+        <div class="face front">
+            <h2>Login</h2>
+            <div class="input-group">
+                <label for="loginUsername">Username</label>
+                <input type="text" id="loginUsername">
+            </div>
+            <div class="input-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword">
+            </div>
+            <div class="button-section">
+                <button onclick="login()">Login</button>
+                <span onclick="flipCard()">Don't have an account? Register</span>
+            </div>
+        </div>
+
+        <!-- Register Side -->
+        <div class="face back">
+            <h2>Register</h2>
+            <div class="input-group">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername">
+            </div>
+            <div class="input-group">
+                <label for="regPassword">Password (8+ characters)</label>
+                <input type="password" id="regPassword">
+            </div>
+            <div class="input-group">
+                <label for="regAge">Age</label>
+                <input type="number" id="regAge">
+            </div>
+
+            <div class="input-group">
+                <label>Gender:</label>
+                <div class="radio-options">
+                    <label class="form-control-group" for="genderMale">
+                        <input type="radio" id="genderMale" name="gender" value="Male"> Male
+                    </label>
+                    <label class="form-control-group" for="genderFemale">
+                        <input type="radio" id="genderFemale" name="gender" value="Female"> Female
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Educational Qualifications:</label>
+                <div class="checkbox-options">
+                    <label class="form-control-group" for="eduHS">
+                        <input type="checkbox" id="eduHS" name="edu" value="High School"> High School
+                    </label>
+                    <label class="form-control-group" for="eduBachelor">
+                        <input type="checkbox" id="eduBachelor" name="edu" value="Bachelor"> Bachelor
+                    </label>
+                    <label class="form-control-group" for="eduMaster">
+                        <input type="checkbox" id="eduMaster" name="edu" value="Master"> Master
+                    </label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <select id="regCountry">
+                    <option value="">Select Country</option>
+                    <option value="Sri Lanka">Sri Lanka</option>
+                    <option value="India">India</option>
+                    <option value="USA">USA</option>
+                    <option value="UK">UK</option>
+                </select>
+            </div>
+
+            <div class="button-section">
+                <button onclick="register()">Register</button>
+                <span onclick="flipCard()">Already have an account? Login</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+
+        function flipCard() {
+            card.classList.toggle('flipped');
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            alert(`Logging in with\nUsername: ${username}\nPassword: ${password}`);
+        }
+
+        function register() {
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+            const age = document.getElementById('regAge').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const qualifications = document.querySelectorAll('input[name="edu"]:checked');
+            const country = document.getElementById('regCountry').value;
+            
+            let genderValue = gender ? gender.value : 'Not specified';
+            let qualificationsList = Array.from(qualifications).map(q => q.value).join(', ');
+
+            alert(`Registering with\nUsername: ${username}\nPassword: ${password}\nAge: ${age}\nGender: ${genderValue}\nQualifications: ${qualificationsList}\nCountry: ${country}`);
+        }
+    </script>
+</body>
+</html>
